@@ -26,8 +26,25 @@
 - Python automation orchestrates, logs, and monitors everything.
 
 **Steps for installatin of Requirements**
-install hombrew
+  --
+1. install hombrew
 
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)
+
+2. Then environment variables
+
+   echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+   eval "$(/opt/homebrew/bin/brew shellenv)"
+
+3. Install terraform
+
+   brew tap hashicorp/tap
+   brew install hashicorp/tap/terraform
+
+   check version - Terraform -version
+
+4. 
+
+
 
 
