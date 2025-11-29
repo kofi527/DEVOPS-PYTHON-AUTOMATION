@@ -1,0 +1,7 @@
+ansible
+ansible-runner
+PyYAML
+requests
+python-terraform
+google-auth
+pytest

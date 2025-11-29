@@ -1,0 +1,66 @@
+- hosts: all
+  become: true
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install python3 and pip
+      apt:
+        name:
+          - python3
+          - python3-pip
+        state: present
+
+    - name: Install docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Create app dir
+      file:
+        path: /opt/myapp
+        state: directory
+        owner: root
+
+    - name: Copy sample app
+      copy:
+        dest: /opt/myapp/app.py
+        content: |
+          from http.server import HTTPServer, BaseHTTPRequestHandler
+          class H(BaseHTTPRequestHandler):
+              def do_GET(self):
+                  self.send_response(200)
+                  self.end_headers()
+                  self.wfile.write(b"Hello from GCP instance\n")
+
+          HTTPServer(("0.0.0.0", 8080), H).serve_forever()
+
+    - name: Create systemd service
+      copy:
+        dest: /etc/systemd/system/myapp.service
+        content: |
+          [Unit]
+          Description=My Python App
+          After=network.target
+
+          [Service]
+          ExecStart=/usr/bin/python3 /opt/myapp/app.py
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: reload systemd and ensure service is running
+      systemd:
+        daemon_reload: yes
+        name: myapp.service
+        state: started
+        enabled: yes
+
+    - name: Try install node exporter (best-effort)
+      apt:
+        name: prometheus-node-exporter
+        state: present
+      ignore_errors: yes
