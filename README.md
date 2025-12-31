@@ -45,7 +45,7 @@
 
 4.  **Install ansible**
 
-     brew install ansible
+     brew install ansible   is the command that helps installs ansible in your operating system
 
      <img width="468" height="238" alt="image" src="https://github.com/user-attachments/assets/ca7b67ee-d0b0-42e0-b49a-dbe46a3840bf" />
 
